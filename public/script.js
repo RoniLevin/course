@@ -2,7 +2,7 @@ var app = angular.module("FlowApp", ['flow'])
 app.config(['flowFactoryProvider', function(flowFactoryProvider) {
   flowFactoryProvider.defaults = {
     target: '/upload',
-    chunkSize: 1024 * 1024,
+    chunkSize: 1024 * 1024 * 10,
     maxChunkRetries: 1,
     simultaneousUploads: 1,
     testChunks: false,
