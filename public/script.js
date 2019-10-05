@@ -1,4 +1,4 @@
-var app = angular.module("FlowApp", ['flow'])
+var app = angular.module("FlowApp", ['flow']);
 app.config(['flowFactoryProvider', function(flowFactoryProvider) {
   flowFactoryProvider.defaults = {
     target: '/upload',
@@ -8,14 +8,18 @@ app.config(['flowFactoryProvider', function(flowFactoryProvider) {
     testChunks: false,
     permanentErrors:[404, 500, 501]
   }
-}])
+}]);
 
 app.controller("FlowCtrl", ["$scope", function($scope) {
   $scope.percentDone = function(file) {
-    return Math.round(file._prevUploadedSize / file.size * 100).toString() + "%";
+    return (file.progress(false) * 100).toFixed(2).toString() + "%";
   };
 
   $scope.progress = function(file) {
     return {width: $scope.percentDone(file)};
   };
-}])
+
+  $scope.isDone = function(file) {
+    return file.isComplete()
+  }
+}]);

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 
@@ -76,7 +75,9 @@ func getChunk(r *http.Request) error {
 	if err != nil {
 		return err
 	}
-	io.Copy(buf, part)
+	if _, err = io.Copy(buf, part); err != nil {
+		return err
+	}
 	chunkNumber := buf.String()
 	buf.Reset()
 
@@ -93,11 +94,9 @@ func getChunk(r *http.Request) error {
 	if err != nil {
 		return err
 	}
-	io.Copy(buf, part)
-	//_, err = part.Read(buf)
-	//if err != nil {
-	//	return err
-	//}
+	if _, err = io.Copy(buf, part); err != nil {
+		return err
+	}
 
 	var f *os.File
 	if chunkNumber == "1" {
@@ -105,12 +104,13 @@ func getChunk(r *http.Request) error {
 			os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
 	} else {
 		f, err = os.OpenFile(buf.String(),
-			os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			os.O_APPEND|os.O_WRONLY, 0644)
 	}
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 	defer f.Close()
+	buf.Reset()
 
 	//move through unused parts 7-8
 	for i := 7; i < 9; i++ {
@@ -126,8 +126,9 @@ func getChunk(r *http.Request) error {
 		return err
 	}
 
-	buf.Reset()
-	io.Copy(f, part)
+	if _, err = io.Copy(buf, part); err != nil {
+		return err
+	}
 
 	return nil
 }
