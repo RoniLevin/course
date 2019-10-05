@@ -32,11 +32,8 @@
         <br>
       </div>
 
-      <div ng-hide="isDone(file)">
-        <button ng-hide="file.paused" ng-click="file.flowObj.pause()"> PAUSE </button>
-        <button ng-show="file.paused" ng-click="file.flowObj.resume()">RESUME </button>
-      </div>
         <div class="progress-bar" ng-style="progress(file)"> {{percentDone(file)}}</div>
+
       <div ng-show="isDone(file)" class="textGreen">Upload Complete</div>
 
     </div>

@@ -126,7 +126,7 @@ func getChunk(r *http.Request) error {
 		return err
 	}
 
-	if _, err = io.Copy(buf, part); err != nil {
+	if _, err = io.Copy(f, part); err != nil {
 		return err
 	}
 
