@@ -21,5 +21,9 @@ app.controller("FlowCtrl", ["$scope", function($scope) {
 
   $scope.isDone = function(file) {
     return file.isComplete()
+  };
+
+  $scope.isFailed = function (file) {
+    return file.error
   }
 }]);
